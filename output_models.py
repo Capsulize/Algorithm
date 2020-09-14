@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Tuple, List
+from typing import Tuple, Set
 from dataclasses_json import dataclass_json
 
 
@@ -8,7 +8,7 @@ from dataclasses_json import dataclass_json
 class Car:
     identifier: int
     owner_id: int
-    employee_ids: List[int]
+    employee_ids: Set[int]
 
 
 @dataclass_json
@@ -16,7 +16,7 @@ class Car:
 class Workspace:
     identifier: int
     max_capacity: int
-    employee_ids: List[int]
+    employee_ids: Set[int]
 
     def is_full(self):
         return self.occupancy() == self.max_capacity
@@ -29,7 +29,7 @@ class Workspace:
 @dataclass
 class Capsule:
     identifier: int
-    workspaces: List[Workspace]
+    workspaces: Set[Workspace]
 
 
 @dataclass_json

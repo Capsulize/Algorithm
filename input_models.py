@@ -1,6 +1,6 @@
 from datetime import time
 from dataclasses import dataclass
-from typing import Tuple, List, Set
+from typing import Tuple, Set
 from dataclasses_json import dataclass_json
 
 
