@@ -6,7 +6,7 @@ class InputModel:
         self.id = identifier
 
 
-class Room(InputModel):
+class Workspace(InputModel):
     def __init__(self, identifier: int = 0, capacity: int = 0):
         super().__init__(identifier)
         self.capacity = capacity
@@ -14,12 +14,15 @@ class Room(InputModel):
 
 class Person(InputModel):
     def __init__(self, identifier: int = 0, home_location: (float, float) = (0, 0), car_capacity: int = 0,
-                 dependencies: list = None, availability: list = None):
+                 shift_dependencies: list = None, capsule_dependencies: list = None, shift_availability: list = None,
+                 workspace_id: int = 0):
         super().__init__(identifier)
         self.home = home_location
         self.car_capacity = car_capacity
-        self.dependencies = dependencies or []
-        self.availability = availability
+        self.shift_dependencies = shift_dependencies or []
+        self.capsule_dependencies = capsule_dependencies or []
+        self.availability = shift_availability
+        self.workspace = workspace_id
 
 
 class Shift:
