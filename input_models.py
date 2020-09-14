@@ -1,32 +1,39 @@
 from datetime import time
-from .model import Model
+from dataclasses import dataclass
+from typing import Tuple, List
+
+from dataclasses_json import dataclass_json
 
 
-class InputModel(Model):
-    pass
+@dataclass_json
+@dataclass
+class Workspace:
+    identifier: int
+    capacity: int
 
 
-class Workspace(InputModel):
-    def __init__(self, identifier: int = 0, capacity: int = 0):
-        super().__init__(identifier)
-        self.capacity = capacity
-
-
-class Person(InputModel):
-    def __init__(self, identifier: int = 0, home_location: (float, float) = (0, 0), car_capacity: int = 0,
-                 shift_dependencies: list = None, capsule_dependencies: list = None, shift_availability: list = None,
-                 workspace_id: int = 0):
-        super().__init__(identifier)
-        self.home = home_location
-        self.car_capacity = car_capacity
-        self.shift_dependencies = shift_dependencies or []
-        self.capsule_dependencies = capsule_dependencies or []
-        self.availability = shift_availability
-        self.workspace = workspace_id
-
-
+@dataclass_json
+@dataclass
 class Shift:
-    def __init__(self, identifier: int = 0, start_time: time = None, end_time: time = None):
-        super().__init__(identifier)
-        self.start = start_time
-        self.end = end_time
+    identifier: int
+    start: Tuple[int, int]
+    end: Tuple[int, int]
+
+    @property
+    def start_time(self):
+        return time(hour=self.start[0], minute=self.start[1])
+
+    @property
+    def end_time(self):
+        return time(hour=self.end[0], minute=self.end[1])
+
+
+@dataclass_json
+@dataclass
+class Person:
+    identifier: int
+    home: Tuple[float, float]
+    car_capacity: int
+    shift_dependencies: List[int]
+    capsule_dependencies: List[int]
+    availability: List[int]
