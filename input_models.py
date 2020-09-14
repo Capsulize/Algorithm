@@ -13,26 +13,10 @@ class Workspace:
 
 @dataclass_json
 @dataclass
-class Shift:
-    identifier: int
-    start: Tuple[int, int]
-    end: Tuple[int, int]
-
-    @property
-    def start_time(self):
-        return time(hour=self.start[0], minute=self.start[1])
-
-    @property
-    def end_time(self):
-        return time(hour=self.end[0], minute=self.end[1])
-
-
-@dataclass_json
-@dataclass
-class Person:
+class Employee:
     identifier: int
     home: Tuple[float, float]
     car_capacity: int
     shift_dependencies: List[int]
     capsule_dependencies: List[int]
-    availability: List[int]
+    shift_availability: List[int]
