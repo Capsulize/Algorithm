@@ -1,6 +1,6 @@
 from datetime import time
 from dataclasses import dataclass
-from typing import Tuple, List
+from typing import Tuple, List, Set
 from dataclasses_json import dataclass_json
 
 
@@ -15,8 +15,9 @@ class Workspace:
 @dataclass
 class Employee:
     identifier: int
-    home: Tuple[float, float]
+    room_id: int
+    home_location: Tuple[float, float]
     car_capacity: int
-    shift_dependencies: List[int]
-    capsule_dependencies: List[int]
-    shift_availability: List[int]
+    shift_dependencies: Set[int]
+    capsule_dependencies: Set[int]
+    shift_availability: Set[int]

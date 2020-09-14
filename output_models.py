@@ -15,7 +15,14 @@ class Car:
 @dataclass
 class Workspace:
     identifier: int
+    max_capacity: int
     employee_ids: List[int]
+
+    def is_full(self):
+        return self.occupancy() == self.max_capacity
+
+    def occupancy(self):
+        return len(self.employee_ids)
 
 
 @dataclass_json
