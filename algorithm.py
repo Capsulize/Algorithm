@@ -1,8 +1,8 @@
 import random
 from typing import Tuple, List, Dict, Set
 from collections import deque
-import input_models as inputs
-import output_models as outputs
+from . import input_models as inputs
+from . import output_models as outputs
 
 
 def capsulize(num_of_shifts: int,
