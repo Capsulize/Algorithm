@@ -99,7 +99,7 @@ def generate_capsules(workspaces: Dict[int, outputs.Workspace],
             if current_space.has_capsule:
                 continue
 
-            new_capsule.add(current_space)
+            new_capsule.workspaces.add(current_space)
             current_space.has_capsule = True
 
             for space_dependency_id in space_dependencies[current_space.identifier]:

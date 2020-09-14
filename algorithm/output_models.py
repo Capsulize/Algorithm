@@ -24,6 +24,9 @@ class Workspace:
     def occupancy(self):
         return len(self.employee_ids)
 
+    def __hash__(self):
+        return self.identifier
+
 
 @dataclass_json
 @dataclass

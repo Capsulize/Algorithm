@@ -21,3 +21,6 @@ class Employee:
     shift_dependencies: Set[int]
     capsule_dependencies: Set[int]
     shift_availability: Set[int]
+
+    def __hash__(self):
+        return self.identifier
