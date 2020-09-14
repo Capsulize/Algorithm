@@ -1,7 +1,6 @@
 from datetime import time
 from dataclasses import dataclass
 from typing import Tuple, List
-
 from dataclasses_json import dataclass_json
 
 
