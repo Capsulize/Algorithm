@@ -1,9 +1,9 @@
 from datetime import time
+from .model import Model
 
 
-class InputModel:
-    def __init__(self, identifier: int = 0):
-        self.id = identifier
+class InputModel(Model):
+    pass
 
 
 class Workspace(InputModel):
