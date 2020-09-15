@@ -22,5 +22,8 @@ class Employee:
     capsule_dependencies: Set[int]
     shift_availability: Set[int]
 
+    def is_driver(self) -> bool:
+        return self.car_capacity > 0
+
     def __hash__(self):
         return self.identifier

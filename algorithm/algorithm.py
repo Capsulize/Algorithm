@@ -1,11 +1,14 @@
 import random
-from typing import List, Dict, Set
-from collections import deque
+import numpy
+from dataclasses import dataclass
+from typing import List, Dict, Set, Tuple
+from collections import deque, namedtuple
 from . import input_models as inputs
 from . import output_models as outputs
 
 
 def capsulize(num_of_shifts: int,
+              max_carpool_distance: float,
               employees: List[inputs.Employee],
               workspaces: List[inputs.Workspace]):
     employee_map = {employee.identifier: employee for employee in employees}
@@ -26,6 +29,10 @@ def capsulize(num_of_shifts: int,
     for spaces in shift_spaces.values():
         capsules = generate_capsules(spaces, employee_map)
         shifts.append(outputs.Shift(len(shifts), capsules, []))
+
+    for shift in shifts:
+        employees = {employee_id: employee_map[employee_id] for employee_id in shift.employee_ids()}
+        shift.cars = generate_shift_cars(employees, max_carpool_distance)
 
     return shifts
 
@@ -110,3 +117,36 @@ def generate_capsules(workspaces: Dict[int, outputs.Workspace],
 
     return capsules
 
+
+def generate_shift_cars(employees: Dict[int, inputs.Employee], max_carpool_distance: float) -> List[outputs.Car]:
+    cars = [outputs.Car(employee.identifier, employee.car_capacity, set()) for employee in employees.values()]
+
+    def distance(source: Tuple[float, float], destination: Tuple[float, float]) -> float:
+        return numpy.linalg.norm(
+            [source_scalar - destination_scalar for source_scalar, destination_scalar in zip(source, destination)])
+
+    for employee in employees.values():
+        employee.possible_cars = deque()
+
+        if employee.is_driver() > 0:
+            continue
+
+        for car in cars:
+            if distance(employee.home_location, employees[car.owner_id].home_location) > max_carpool_distance:
+                continue
+
+            employee.possible_cars.append(car)
+
+        employee.possible_cars = sorted(employee.possible_cars,
+                                        key=lambda car: distance(employee.home_location,
+                                                                 employees[car.owner_id].home_location))
+
+    sorted_employees = sorted(employees.values(), key=lambda employee: len(employee.possible_cars))
+
+    for employee in sorted_employees:
+        for car in employee.possible_cars:
+            if not car.is_full():
+                car.employee_ids.append(employee)
+                break
+
+    return cars

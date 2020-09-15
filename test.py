@@ -4,7 +4,7 @@ from algorithm.algorithm import capsulize
 
 
 def test():
-    shifts = capsulize(1, [inputs.Employee(1, 1, (0.5, 0.5), 4, set(), set(), {0})], [inputs.Workspace(1, 1)])
+    shifts = capsulize(1, 1, [inputs.Employee(1, 1, (0.5, 0.5), 4, set(), set(), {0})], [inputs.Workspace(1, 1)])
     print(shifts)
 
 
