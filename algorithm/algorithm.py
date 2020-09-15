@@ -84,13 +84,14 @@ def assign_group_shift(group: Set[inputs.Employee]) -> int:
 def generate_capsules(workspaces: Dict[int, outputs.Workspace],
                       employees: Dict[int, inputs.Employee]) -> List[outputs.Capsule]:
     capsules = []
-    space_dependencies = {space_id: [] for space_id in workspaces.keys()}
+    space_dependencies = {space_id: set() for space_id in workspaces.keys()}
 
     for space in workspaces.values():
         for employee_id in space.employee_ids:
             for dependency_employee_id in employees[employee_id].capsule_dependencies:
-                space_dependencies[space.identifier].append(employees[dependency_employee_id].room_id)
-                space_dependencies[employees[dependency_employee_id].room_id].append(space.identifier)
+                if space.identifier is not employees[dependency_employee_id].room_id:
+                    space_dependencies[space.identifier].add(employees[dependency_employee_id].room_id)
+                    space_dependencies[employees[dependency_employee_id].room_id].add(space.identifier)
 
         space.has_capsule = False
 
@@ -177,7 +178,7 @@ def generate_shift_cars(employees: Dict[int, inputs.Employee], max_carpool_dista
     for employee in sorted_employees:
         for car in employee.possible_cars:
             if not car.is_full():
-                car.employee_ids.append(employee)
+                car.employee_ids.append(employee.identifier)
                 break
 
     return cars
