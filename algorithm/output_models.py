@@ -28,6 +28,9 @@ class Workspace:
     def is_full(self) -> bool:
         return self.occupancy() >= self.max_capacity
 
+    def is_empty(self) -> bool:
+        return self.occupancy() <= 0
+
     def occupancy(self) -> int:
         return len(self.employee_ids)
 

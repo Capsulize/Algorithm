@@ -27,7 +27,8 @@ def capsulize(num_of_shifts: int,
     shifts = []
 
     for spaces in shift_spaces.values():
-        capsules = generate_capsules(spaces, employee_map)
+        occupied_spaces = [space for space in spaces if not space.is_empty()]
+        capsules = generate_capsules(occupied_spaces, employee_map)
         shifts.append(outputs.Shift(len(shifts), capsules, []))
 
     for shift in shifts:
@@ -118,8 +119,38 @@ def generate_capsules(workspaces: Dict[int, outputs.Workspace],
     return capsules
 
 
+def rebalance_capsules(capsules: List[outputs.Capsule], employees: Dict[int, inputs.Employee]):
+    pass
+
+
+def calc_employee_capsule_priority(target_employee: inputs.Employee, employees: Dict[int, inputs.Employee]):
+    reversed_dependencies = {employee_id: [] for employee_id in employees.keys()}
+    employee_priorities = {employee_id: 0 for employee_id in employees.keys()}
+
+    for employee in employees.values():
+        for dependency_id in employee.capsule_dependencies:
+            reversed_dependencies[dependency_id] = employee.identifier
+
+    for employee_id in reversed_dependencies.keys():
+        counted_ids = list()
+        id_queue = deque([employee_id])
+
+        while len(id_queue) > 0:
+            current_id = id_queue.popleft()
+
+            if current_id in counted_ids:
+                continue
+
+            employee_priorities[employee_id] += 1
+
+            for dependency_id in employees.keys():
+                if dependency_id not in counted_ids:
+                    id_queue.append(dependency_id)
+
+
 def generate_shift_cars(employees: Dict[int, inputs.Employee], max_carpool_distance: float) -> List[outputs.Car]:
-    cars = [outputs.Car(employee.identifier, employee.car_capacity, set()) for employee in employees.values()]
+    cars = [outputs.Car(employee.identifier, employee.car_capacity, set()) for employee in employees.values() if
+            employee.is_driver()]
 
     def distance(source: Tuple[float, float], destination: Tuple[float, float]) -> float:
         return numpy.linalg.norm(
