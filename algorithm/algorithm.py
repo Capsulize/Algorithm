@@ -27,8 +27,7 @@ def capsulize(num_of_shifts: int,
     shifts = []
 
     for spaces in shift_spaces.values():
-        occupied_spaces = [space for space in spaces if not space.is_empty()]
-        capsules = generate_capsules(occupied_spaces, employee_map)
+        capsules = generate_capsules(spaces, employee_map)
         shifts.append(outputs.Shift(len(shifts), capsules, []))
 
     for shift in shifts:
@@ -115,7 +114,7 @@ def generate_capsules(workspaces: Dict[int, outputs.Workspace],
                 if not workspaces[space_dependency_id].has_capsule:
                     space_queue.append(workspaces[space_dependency_id])
 
-            capsules.append(new_capsule)
+        capsules.append(new_capsule)
 
     return capsules
 
