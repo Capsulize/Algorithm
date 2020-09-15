@@ -178,7 +178,7 @@ def generate_shift_cars(employees: Dict[int, inputs.Employee], max_carpool_dista
     for employee in sorted_employees:
         for car in employee.possible_cars:
             if not car.is_full():
-                car.employee_ids.append(employee.identifier)
+                car.employee_ids.add(employee.identifier)
                 break
 
     return cars
